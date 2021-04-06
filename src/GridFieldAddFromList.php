@@ -16,6 +16,12 @@ use SilverStripe\View\SSViewer;
  * `GridField` component that allows to add a new row, in a similar way
  * of what already done by stock `GridFieldAddExistingAutocompleter` but
  * using a custom `DropdownField` instead of an autocompleter entry.
+ *
+ * The selected field is temporarily stored by `handleAction()` and
+ * added to the database later on by `getManipulatedData()`. This is
+ * how `GridFieldAddExistingAutocompleter` is implemented. No idea
+ * why: I tried to add the record directly from `handleAction` and it
+ * seems to work anyway.
  */
 class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionProvider, GridField_DataManipulator
 {
@@ -39,6 +45,11 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
      */
     protected $placeholder;
 
+    /**
+     * @var bool Do not allow adding the same option more than once
+     */
+    protected $unique;
+
 
     /**
      * @param string $fragment  Fragment where to render this component
@@ -51,6 +62,7 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
         $this->field = $field;
         $this->list = $list;
         $this->placeholder = _t(self::class . '.PLACEHOLDER', '(select an option)');
+        $this->unique = true;
     }
 
     /**
@@ -61,9 +73,13 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
     {
         $list = $this->list;
         if (! $list) {
-            // Fallback to the full model class without GridField items
-            $list = $grid->getModelClass()::get()
-                ->subtract($grid->getList());
+            // Fallback to the full model class
+            $list = $grid->getModelClass()::get();
+        }
+        if ($this->unique) {
+            $list = $list->exclude([
+                'ID' => $grid->getList()->column($this->field),
+            ]);
         }
 
         $dropdown = DropdownField::create('gridfield_addfromlist_original')
@@ -195,5 +211,23 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
     public function getPlaceholderOption()
     {
         return $this->placeholder;
+    }
+
+    /**
+     * @param bool $status
+     * @return $this
+     */
+    public function setUnique($status)
+    {
+        $this->unique = $status;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUnique()
+    {
+        return $this->unique;
     }
 }
