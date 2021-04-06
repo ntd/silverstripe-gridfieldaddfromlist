@@ -1,0 +1,8 @@
+---
+Name: gridfieldaddfromlist
+After:
+  - framework
+---
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_javascript:
+    - 'entidi/silverstripe-gridfieldaddfromlist:client/gridfieldaddfromlist.js'

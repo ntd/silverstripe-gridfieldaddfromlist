@@ -1,0 +1,21 @@
+{
+  "name": "entidi/silverstripe-gridfieldaddfromlist",
+  "description": "Adds rows to GridField from a dropdown list",
+  "type": "silverstripe-vendormodule",
+  "keywords": ["silverstripe", "gridfield", "dropdown", "component", "inline"],
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "eNTiDi",
+      "email": "ntd@entidi.it"
+    }
+  ],
+  "require": {
+    "silverstripe/framework": "~4.0"
+  },
+  "extra": {
+    "expose": [
+      "client"
+    ]
+  }
+}
