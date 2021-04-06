@@ -73,8 +73,7 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
     {
         $list = $this->list;
         if (! $list) {
-            // Fallback to the full model class
-            $list = $grid->getModelClass()::get();
+            $list = $this->getFallbackSearchList($grid);
         }
         if ($this->unique) {
             $list = $list->exclude([
@@ -193,6 +192,25 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
     public function getSearchList()
     {
         return $this->list;
+    }
+
+    /**
+     * @param GridField $grid
+     * @return DataList
+     */
+    protected function getFallbackSearchList(GridField $grid)
+    {
+        $class = $grid->getModelClass();
+        $field = $this->field;
+        if (strlen($field) > 2 && substr($field, -2) == 'ID') {
+            // This is likely a relation: try to get the class from it
+            $relation = substr($field, 0, -2);
+            $subclass = $class::create()->getRelationClass($relation);
+            if ($subclass) {
+                $class = $subclass;
+            }
+        }
+        return $class::get();
     }
 
     /**
