@@ -1,0 +1,4 @@
+it:
+  eNTiDi\GridFieldAddFromList\GridFieldAddFromList:
+    ADDTO: 'Aggiungi rigo'
+    PLACEHOLDER: '(selezionare una voce)'

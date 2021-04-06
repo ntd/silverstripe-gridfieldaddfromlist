@@ -16,6 +16,12 @@ use SilverStripe\View\SSViewer;
  * `GridField` component that allows to add a new row, in a similar way
  * of what already done by stock `GridFieldAddExistingAutocompleter` but
  * using a custom `DropdownField` instead of an autocompleter entry.
+ *
+ * The selected field is temporarily stored by `handleAction()` and
+ * added to the database later on by `getManipulatedData()`. This is
+ * how `GridFieldAddExistingAutocompleter` is implemented. No idea
+ * why: I tried to add the record directly from `handleAction` and it
+ * seems to work anyway.
  */
 class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionProvider, GridField_DataManipulator
 {
@@ -39,6 +45,11 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
      */
     protected $placeholder;
 
+    /**
+     * @var bool Do not allow adding the same option more than once
+     */
+    protected $unique;
+
 
     /**
      * @param string $fragment  Fragment where to render this component
@@ -50,7 +61,8 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
         $this->fragment = $fragment;
         $this->field = $field;
         $this->list = $list;
-        $this->placeholder = '(selezionare una voce)';
+        $this->placeholder = _t(self::class . '.PLACEHOLDER', '(select an option)');
+        $this->unique = true;
     }
 
     /**
@@ -61,9 +73,12 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
     {
         $list = $this->list;
         if (! $list) {
-            // Fallback to the full model class without GridField items
-            $list = $grid->getModelClass()::get()
-                ->subtract($grid->getList());
+            $list = $this->getFallbackSearchList($grid);
+        }
+        if ($this->unique) {
+            $list = $list->exclude([
+                'ID' => $grid->getList()->column($this->field),
+            ]);
         }
 
         $dropdown = DropdownField::create('gridfield_addfromlist_original')
@@ -76,7 +91,7 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
         $action = GridField_FormAction::create(
             $grid,
             'gridfield_relationadd',
-            'Aggiungi rigo',
+            _t(self::class . '.ADDTO', 'Add row'),
             'addto',
             'addto'
         )   ->setDisabled(true)
@@ -165,7 +180,7 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
      * @param array $list
      * @return $this
      */
-    public function setList(SS_List $list)
+    public function setSearchList(SS_List $list)
     {
         $this->list = $list;
         return $this;
@@ -174,16 +189,35 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
     /**
      * @return SS_List|null
      */
-    public function getList()
+    public function getSearchList()
     {
         return $this->list;
+    }
+
+    /**
+     * @param GridField $grid
+     * @return DataList
+     */
+    protected function getFallbackSearchList(GridField $grid)
+    {
+        $class = $grid->getModelClass();
+        $field = $this->field;
+        if (strlen($field) > 2 && substr($field, -2) == 'ID') {
+            // This is likely a relation: try to get the class from it
+            $relation = substr($field, 0, -2);
+            $subclass = $class::create()->getRelationClass($relation);
+            if ($subclass) {
+                $class = $subclass;
+            }
+        }
+        return $class::get();
     }
 
     /**
      * @param string $text
      * @return $this
      */
-    public function setPlaceholder($text)
+    public function setPlaceholderOption($text)
     {
         $this->placeholder = $placeholder;
         return $this;
@@ -192,8 +226,26 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
     /**
      * @return string
      */
-    public function getPlaceholder()
+    public function getPlaceholderOption()
     {
         return $this->placeholder;
+    }
+
+    /**
+     * @param bool $status
+     * @return $this
+     */
+    public function setUnique($status)
+    {
+        $this->unique = $status;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUnique()
+    {
+        return $this->unique;
     }
 }
