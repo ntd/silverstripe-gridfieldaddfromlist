@@ -165,7 +165,7 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
      * @param array $list
      * @return $this
      */
-    public function setList(SS_List $list)
+    public function setSearchList(SS_List $list)
     {
         $this->list = $list;
         return $this;
@@ -174,7 +174,7 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
     /**
      * @return SS_List|null
      */
-    public function getList()
+    public function getSearchList()
     {
         return $this->list;
     }
@@ -183,7 +183,7 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
      * @param string $text
      * @return $this
      */
-    public function setPlaceholder($text)
+    public function setPlaceholderOption($text)
     {
         $this->placeholder = $placeholder;
         return $this;
@@ -192,7 +192,7 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
     /**
      * @return string
      */
-    public function getPlaceholder()
+    public function getPlaceholderOption()
     {
         return $this->placeholder;
     }
