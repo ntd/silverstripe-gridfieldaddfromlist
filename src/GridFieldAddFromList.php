@@ -50,7 +50,7 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
         $this->fragment = $fragment;
         $this->field = $field;
         $this->list = $list;
-        $this->placeholder = '(selezionare una voce)';
+        $this->placeholder = _t(self::class . '.PLACEHOLDER', '(select an option)');
     }
 
     /**
@@ -76,7 +76,7 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
         $action = GridField_FormAction::create(
             $grid,
             'gridfield_relationadd',
-            'Aggiungi rigo',
+            _t(self::class . '.ADDTO', 'Add row'),
             'addto',
             'addto'
         )   ->setDisabled(true)

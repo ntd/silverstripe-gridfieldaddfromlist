@@ -1,0 +1,4 @@
+en:
+  eNTiDi\GridFieldAddFromList\GridFieldAddFromList:
+    ADDTO: 'Add row'
+    PLACEHOLDER: '(select an option)'
