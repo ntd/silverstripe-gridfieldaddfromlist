@@ -2,7 +2,11 @@ SilverStripe GridFieldAddFromList
 =================================
 
 This module provides a new `GridField` component that allows to add rows
-to a relation set. This is quite similar to what already done by stock
+to a grid only after setting a relation.
+
+![Screenshot of GridFieldAddFromList](docs/it/screenshot.png)
+
+This quite is similar to what already done by stock
 `GridFieldAddExistingAutocompleter` but with two important differences:
 
 1. the relation is set by leveraging a standard `DropdownField`;
