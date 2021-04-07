@@ -15,7 +15,7 @@ the same `DataObject` more than once.
 Installation
 ------------
 
-    composer require entidi/silverstripe-gridfieldaddfromlist
+    composer require entidi/silverstripe-gridfieldaddfromlist ^1.0
 
 Other documentation
 -------------------
