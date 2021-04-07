@@ -7,14 +7,16 @@ to a grid only after setting a relation.
 ![Screenshot of GridFieldAddFromList](docs/it/screenshot.png)
 
 This quite is similar to what already done by stock
-`GridFieldAddExistingAutocompleter` but with two important differences:
+`GridFieldAddExistingAutocompleter` but with a few important
+differences:
 
 1. the relation is set by leveraging a standard `DropdownField`;
-2. the source list of that dropdown can be customized.
+2. any relation can be handled (`setTargetField`);
+3. the same item can be added more than once (`setUnique`).
 
-This comes in handy when you want more control on the source list,
-when you want to set a specific relation or when you need to reference
-the same `DataObject` more than once.
+This can be useful in contexts where `GridFieldAddExistingAutocompleter`
+cannot be used, e.g. setting an **has-one** relation or linking the same
+item more than once in **many-many** relations.
 
 Installation
 ------------
