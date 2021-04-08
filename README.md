@@ -6,13 +6,13 @@ to a grid only after setting a relation.
 
 ![Screenshot of GridFieldAddFromList](docs/it/screenshot.png)
 
-This quite is similar to what already done by stock
+This is quite similar to what already done by stock
 `GridFieldAddExistingAutocompleter` but with a few important
 differences:
 
 1. the relation is set by leveraging a standard `DropdownField`;
-2. any relation can be handled (`setTargetField`);
-3. the same item can be added more than once (`setUnique`).
+2. any relation can be handled (check `setTargetField()`);
+3. the same item can be added more than once (check `setUnique()`).
 
 This can be useful in contexts where `GridFieldAddExistingAutocompleter`
 cannot be used, e.g. setting an **has-one** relation or linking the same
