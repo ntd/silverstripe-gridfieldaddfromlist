@@ -76,9 +76,10 @@ class GridFieldAddFromList implements GridField_HTMLProvider, GridField_ActionPr
             $list = $this->getFallbackSearchList($grid);
         }
         if ($this->unique) {
-            $list = $list->exclude([
-                'ID' => $grid->getList()->column($this->field),
-            ]);
+            $already_added = $grid->getList()->column($this->field);
+            if ($already_added) {
+                $list = $list->exclude([ 'ID' => $already_added ]);
+            }
         }
 
         $dropdown = DropdownField::create('gridfield_addfromlist_original')
