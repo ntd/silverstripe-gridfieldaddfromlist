@@ -4,7 +4,7 @@ SilverStripe GridFieldAddFromList
 This module provides a new `GridField` component that allows to add rows
 to a grid only after setting a relation.
 
-![Screenshot of GridFieldAddFromList](docs/it/screenshot.png)
+![Screenshot of GridFieldAddFromList](docs/en/screenshot.png)
 
 This is quite similar to what already done by stock
 `GridFieldAddExistingAutocompleter` but with a few important
@@ -21,7 +21,7 @@ item more than once in **many-many** relations.
 Installation
 ------------
 
-    composer require entidi/silverstripe-gridfieldaddfromlist ^1.0
+    composer require entidi/silverstripe-gridfieldaddfromlist
 
 Other documentation
 -------------------

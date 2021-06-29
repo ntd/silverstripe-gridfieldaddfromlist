@@ -17,7 +17,6 @@ class Document extends DataObject
     private static $db = [
         'Name' => 'Varchar',
     ];
-
     private static $has_many = [
         'Rows' => DocumentArticle::class,
     ];
@@ -33,6 +32,9 @@ class Document extends DataObject
             $grid->getConfig()
                  ->removeComponentsByType([ GridFieldAddNewButton::class ])
                  ->addComponent($component);
+
+            // If you are using `$many_many_extraFields` instead, the
+            // default target field (`ID`) will just work as expected
             $component->setTargetField('ArticleID');
 
             // To be able to add an article more than once, you need to
@@ -58,6 +60,13 @@ class Article extends DataObject
     private static $has_many = [
         'Rows' => DocumentArticle::class,
     ];
+
+    // The `Title` field specifies what will be shown (and searched!)
+    // in the `DropdownField`
+    public function getTitle()
+    {
+        return $this->Name;
+    }
 }
 
 class DocumentArticle extends DataObject
