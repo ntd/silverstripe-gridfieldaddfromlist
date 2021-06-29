@@ -17,7 +17,6 @@ class Document extends DataObject
     private static $db = [
         'Name' => 'Varchar',
     ];
-
     private static $has_many = [
         'Rows' => DocumentArticle::class,
     ];
@@ -61,6 +60,13 @@ class Article extends DataObject
     private static $has_many = [
         'Rows' => DocumentArticle::class,
     ];
+
+    // The `Title` field specifies what will be shown (and searched!)
+    // in the `DropdownField`
+    public function getTitle()
+    {
+        return $this->Name;
+    }
 }
 
 class DocumentArticle extends DataObject
