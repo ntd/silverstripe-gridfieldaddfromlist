@@ -21,7 +21,7 @@ item more than once in **many-many** relations.
 Installation
 ------------
 
-    composer require entidi/silverstripe-gridfieldaddfromlist ^1.0
+    composer require entidi/silverstripe-gridfieldaddfromlist
 
 Other documentation
 -------------------
