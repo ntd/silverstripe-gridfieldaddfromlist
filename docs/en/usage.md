@@ -33,6 +33,9 @@ class Document extends DataObject
             $grid->getConfig()
                  ->removeComponentsByType([ GridFieldAddNewButton::class ])
                  ->addComponent($component);
+
+            // If you are using `$many_many_extraFields` instead, the
+            // default target field (`ID`) will just work as expected
             $component->setTargetField('ArticleID');
 
             // To be able to add an article more than once, you need to
